@@ -1,79 +1,93 @@
 import React from "react";
-import '../ParamsEditor.css'
-import {MyInput} from "../../UI/UIComponents/MyInput";
-import {StyledEditContainer} from "../../StyledEditor";
+import { StyledEditContainer } from "../../StyledEditor";
+import { Input } from "../Input";
 
 export interface Param {
-    id: number;
-    name: string;
-    type?: any
+  id: number;
+  name: string;
+  type?: any;
 }
+
 export interface ParamValue {
-    paramId: number;
-    value: string;
+  paramId: number;
+  value: string;
 }
+
 export interface Model {
-    paramValues: ParamValue[];
+  paramValues: ParamValue[];
 }
+
 export interface Props {
-    params: Param[];
-    model: Model;
+  params: Param[];
+  model: Model;
 }
 
+interface State {
+  Model: Model;
+}
 
-export class ParamsEditor extends React.Component<Props> {
+export class ParamsEditor extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      Model: this.props.model,
+    };
+  }
 
-    constructor(props: Props) {
-        super(props);
+  public getModel() {
+    return this.state.Model;
+  }
 
+  public setParam(id: number, value: string) {
+    const newParamValues = this.state.Model.paramValues.map((item, index) => {
+      if (item.paramId === id) {
+        return {
+          ...item,
+          value,
+        };
+      }
+      return item;
+    });
 
-    }
+    this.setState({
+      Model: {
+        paramValues: newParamValues,
+      },
+    });
+  }
 
-    public getModel(): Model{
-        return this.props.model
-    }
+  private handleChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+    param: ParamValue
+  ) {
+    this.setParam(param.paramId, e.target.value);
 
-    render() {
+    console.log("this.getModel()", this.getModel());
+  }
 
-        const changeHandle = (e:React.ChangeEvent<HTMLInputElement>, v: ParamValue) => {
-            v.value = e.target.value
-            console.log(this.getModel())
-            console.log('v.value', v)
-        }
+  render() {
+    return (
+      <StyledEditContainer>
+        <div>
+          {this.props.params.map((param: Param) => {
+            return <div key={param.id}>{param.name}</div>;
+          })}
+        </div>
 
-        // написать колбек changeHandler который заберет всю логику из onChange
-
-        return (
-            <StyledEditContainer>
-                <div >
-                    {
-                        this.props.params.map((param: Param) => {
-                            console.log('param', param)
-                            return <div key={param.id}>{param.name}</div>
-                        })
-                    }
-                </div>
-
-                <div>
-                    {
-                        this.getModel().paramValues.map((v:ParamValue ) => {
-                            return <div key={v.paramId}>
-                                <MyInput
-                                    type="text"
-                                   defaultValue={v.value}
-                                   onChange={(e) => changeHandle(e, v)}
-
-                                       />
-                            </div>
-
-                        })
-                    }
-                </div>
-
-
-
-
-            </StyledEditContainer>
-        )
-    }
+        <div>
+          {this.state.Model.paramValues.map((param: ParamValue) => {
+            return (
+              <div key={param.paramId}>
+                <Input
+                  type="text"
+                  value={param.value}
+                  onChange={(e) => this.handleChange(e, param)}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </StyledEditContainer>
+    );
+  }
 }

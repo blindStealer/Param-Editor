@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -12,17 +12,15 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const StyledEditContainer = styled.div`
-    display: flex;
-    width: 500px;
-    justify-content: center;
-    align-items: center;
-`
+  display: flex;
+  width: 500px;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const StyledApp = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100vh;
-  
-
-`
+`;
