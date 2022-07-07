@@ -1,14 +1,37 @@
 import React from "react";
-import { model, params } from "./Data";
-import { ParamsEditor } from "./components/ParamsEditor/ParamsEditor";
-import { StyledApp } from "./StyledEditor";
+import { ParamsEditor } from "./ParamsEditor";
 
-export class App extends React.Component {
-  render() {
-    return (
-      <StyledApp>
-        <ParamsEditor model={model} params={params} />
-      </StyledApp>
-    );
-  }
-}
+export const params = [
+  {
+    id: 1,
+    name: "Назначение",
+  },
+  {
+    id: 2,
+    name: "Длина",
+  },
+  {
+    id: 3,
+    name: "Ширина",
+  },
+];
+
+export const model = {
+  paramValues: [
+    {
+      paramId: 1,
+      value: "повседневное",
+    },
+    {
+      paramId: 2,
+      value: "макси",
+    },
+
+    {
+      paramId: 3,
+      value: "велью",
+    },
+  ],
+};
+
+export const App = () => <ParamsEditor model={model} params={params} />;
